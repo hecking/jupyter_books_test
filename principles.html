@@ -1,0 +1,578 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+    <title>InsightsNet Architecture (Initial Draft) &#8212; Example book</title>
+    
+  <!-- Loaded before other Sphinx assets -->
+  <link href="_static/styles/theme.css?digest=1999514e3f237ded88cf" rel="stylesheet">
+<link href="_static/styles/pydata-sphinx-theme.css?digest=1999514e3f237ded88cf" rel="stylesheet">
+
+    
+  <link rel="stylesheet"
+    href="_static/vendor/fontawesome/5.13.0/css/all.min.css">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="_static/vendor/fontawesome/5.13.0/webfonts/fa-solid-900.woff2">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="_static/vendor/fontawesome/5.13.0/webfonts/fa-brands-400.woff2">
+
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
+    <link rel="stylesheet" href="_static/styles/sphinx-book-theme.css?digest=5115cc725059bd94278eecd172e13a965bf8f5a9" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="_static/togglebutton.css" />
+    <link rel="stylesheet" type="text/css" href="_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="_static/mystnb.css" />
+    <link rel="stylesheet" type="text/css" href="_static/sphinx-thebe.css" />
+    <link rel="stylesheet" type="text/css" href="_static/design-style.b7bb847fb20b106c3d81b95245e65545.min.css" />
+    
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=1999514e3f237ded88cf">
+
+    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/doctools.js"></script>
+    <script src="_static/clipboard.min.js"></script>
+    <script src="_static/copybutton.js"></script>
+    <script src="_static/scripts/sphinx-book-theme.js?digest=9c920249402e914e316237a7dbc6769907cce411"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="_static/togglebutton.js"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown, .tag_hide_input div.cell_input, .tag_hide-input div.cell_input, .tag_hide_output div.cell_output, .tag_hide-output div.cell_output, .tag_hide_cell.cell, .tag_hide-cell.cell';</script>
+    <script src="_static/design-tabs.js"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"
+const thebe_selector = ".thebe,.cell"
+const thebe_selector_input = "pre"
+const thebe_selector_output = ".output, .cell_output"
+</script>
+    <script async="async" src="_static/sphinx-thebe.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Data Preparation" href="0_download_process_data.html" />
+    <link rel="prev" title="Corpus Analytics Graph (CAG)" href="introduction.html" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="docsearch:language" content="None">
+    
+
+    <!-- Google Analytics -->
+    
+  </head>
+  <body data-spy="scroll" data-target="#bd-toc-nav" data-offset="60">
+<!-- Checkboxes to toggle the left sidebar -->
+<input type="checkbox" class="sidebar-toggle" name="__navigation" id="__navigation" aria-label="Toggle navigation sidebar">
+<label class="overlay overlay-navbar" for="__navigation">
+    <div class="visually-hidden">Toggle navigation sidebar</div>
+</label>
+<!-- Checkboxes to toggle the in-page toc -->
+<input type="checkbox" class="sidebar-toggle" name="__page-toc" id="__page-toc" aria-label="Toggle in-page Table of Contents">
+<label class="overlay overlay-pagetoc" for="__page-toc">
+    <div class="visually-hidden">Toggle in-page Table of Contents</div>
+</label>
+<!-- Headers at the top -->
+<div class="announcement header-item noprint"></div>
+<div class="header header-item noprint"></div>
+
+    
+    <div class="container-fluid" id="banner"></div>
+
+    
+
+    <div class="container-xl">
+      <div class="row">
+          
+<!-- Sidebar -->
+<div class="bd-sidebar noprint" id="site-navigation">
+    <div class="bd-sidebar__content">
+        <div class="bd-sidebar__top"><div class="navbar-brand-box">
+    <a class="navbar-brand text-wrap" href="index.html">
+      
+        <!-- `logo` is deprecated in Sphinx 4.0, so remove this when we stop supporting 3 -->
+        
+      
+      
+      <img src="_static/cag_logo.png" class="logo" alt="logo">
+      
+      
+      <h1 class="site-logo" id="site-title">Example book</h1>
+      
+    </a>
+</div><form class="bd-search d-flex align-items-center" action="search.html" method="get">
+  <i class="icon fas fa-search"></i>
+  <input type="search" class="form-control" name="q" id="search-input" placeholder="Search this book..." aria-label="Search this book..." autocomplete="off" >
+</form><nav class="bd-links" id="bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="introduction.html">
+                    Corpus Analytics Graph (CAG)
+                </a>
+            </li>
+        </ul>
+        <ul class="current nav bd-sidenav">
+ <li class="toctree-l1 current active">
+  <a class="current reference internal" href="#">
+   InsightsNet Architecture (Initial Draft)
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="0_download_process_data.html">
+   Data Preparation
+  </a>
+ </li>
+</ul>
+
+    </div>
+</nav></div>
+        <div class="bd-sidebar__bottom">
+             <!-- To handle the deprecated key -->
+            
+            <div class="navbar_extra_footer">
+            Powered by <a href="https://jupyterbook.org">Jupyter Book</a>
+            </div>
+            
+        </div>
+    </div>
+    <div id="rtd-footer-container"></div>
+</div>
+
+
+          
+
+
+          
+<!-- A tiny helper pixel to detect if we've scrolled -->
+<div class="sbt-scroll-pixel-helper"></div>
+<!-- Main content -->
+<div class="col py-0 content-container">
+    
+    <div class="header-article row sticky-top noprint">
+        
+
+
+
+<div class="col py-1 d-flex header-article-main">
+    <div class="header-article__left">
+        
+        <label for="__navigation"
+  class="headerbtn"
+  data-toggle="tooltip"
+data-placement="right"
+title="Toggle navigation"
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-bars"></i>
+  </span>
+
+</label>
+
+        
+    </div>
+    <div class="header-article__right">
+<button onclick="toggleFullScreen()"
+  class="headerbtn"
+  data-toggle="tooltip"
+data-placement="bottom"
+title="Fullscreen mode"
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+<div class="menu-dropdown menu-dropdown-repository-buttons">
+  <button class="headerbtn menu-dropdown__trigger"
+      aria-label="Source repositories">
+      <i class="fab fa-github"></i>
+  </button>
+  <div class="menu-dropdown__content">
+    <ul>
+      <li>
+        <a href="https://github.com/hecking/jupyter_books_test"
+   class="headerbtn"
+   data-toggle="tooltip"
+data-placement="left"
+title="Source repository"
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="headerbtn__text-container">repository</span>
+</a>
+
+      </li>
+      
+      <li>
+        <a href="https://github.com/hecking/jupyter_books_test/issues/new?title=Issue%20on%20page%20%2Fprinciples.html&body=Your%20issue%20content%20here."
+   class="headerbtn"
+   data-toggle="tooltip"
+data-placement="left"
+title="Open an issue"
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="headerbtn__text-container">open issue</span>
+</a>
+
+      </li>
+      
+    </ul>
+  </div>
+</div>
+
+<div class="menu-dropdown menu-dropdown-download-buttons">
+  <button class="headerbtn menu-dropdown__trigger"
+      aria-label="Download this page">
+      <i class="fas fa-download"></i>
+  </button>
+  <div class="menu-dropdown__content">
+    <ul>
+      <li>
+        <a href="_sources/principles.md"
+   class="headerbtn"
+   data-toggle="tooltip"
+data-placement="left"
+title="Download source file"
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="headerbtn__text-container">.md</span>
+</a>
+
+      </li>
+      
+      <li>
+        
+<button onclick="printPdf(this)"
+  class="headerbtn"
+  data-toggle="tooltip"
+data-placement="left"
+title="Print to PDF"
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="headerbtn__text-container">.pdf</span>
+</button>
+
+      </li>
+      
+    </ul>
+  </div>
+</div>
+<label for="__page-toc"
+  class="headerbtn headerbtn-page-toc"
+  
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-list"></i>
+  </span>
+
+</label>
+
+    </div>
+</div>
+
+<!-- Table of contents -->
+<div class="col-md-3 bd-toc show noprint">
+    <div class="tocsection onthispage pt-5 pb-3">
+        <i class="fas fa-list"></i> Contents
+    </div>
+    <nav id="bd-toc-nav" aria-label="Page">
+        <ul class="visible nav section-nav flex-column">
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#handling-time-and-provenance-metadata">
+   Handling time and provenance metadata
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#subgraph-selection">
+   Subgraph selection
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#components">
+   Components
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#graph-builders">
+     Graph Builders
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#annotators">
+     Annotators
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#annoation-linkers">
+     Annoation Linkers
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#analyzers">
+     Analyzers
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#gui">
+   GUI
+  </a>
+ </li>
+</ul>
+
+    </nav>
+</div>
+    </div>
+    <div class="article row">
+        <div class="col pl-md-3 pl-lg-5 content-container">
+            <!-- Table of contents that is only displayed when printing the page -->
+            <div id="jb-print-docs-body" class="onlyprint">
+                <h1>InsightsNet Architecture (Initial Draft)</h1>
+                <!-- Table of contents -->
+                <div id="print-main-content">
+                    <div id="jb-print-toc">
+                        
+                        <div>
+                            <h2> Contents </h2>
+                        </div>
+                        <nav aria-label="Page">
+                            <ul class="visible nav section-nav flex-column">
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#handling-time-and-provenance-metadata">
+   Handling time and provenance metadata
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#subgraph-selection">
+   Subgraph selection
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#components">
+   Components
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#graph-builders">
+     Graph Builders
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#annotators">
+     Annotators
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#annoation-linkers">
+     Annoation Linkers
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#analyzers">
+     Analyzers
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#gui">
+   GUI
+  </a>
+ </li>
+</ul>
+
+                        </nav>
+                    </div>
+                </div>
+            </div>
+            <main id="main-content" role="main">
+                
+              <div>
+                
+  <section class="tex2jax_ignore mathjax_ignore" id="insightsnet-architecture-initial-draft">
+<h1>InsightsNet Architecture (Initial Draft)<a class="headerlink" href="#insightsnet-architecture-initial-draft" title="Permalink to this headline">#</a></h1>
+<p>The central component of InsightsNet is a property graph that links objects of study and annotations stored in ArangoDB. The InsightsNet <a class="reference external" href="https://gitlab.dlr.de/insightsnet/data-model">data model</a> describes the structure of the property graph.</p>
+<p>The graph is, both, object of analysis as well as result container. This means that annotation runs evaluate the graph and enrich it with annoations.</p>
+<p>In the example below object of study (OOS) nodes are depicted as white boxes and annoation nodes as grey boxes. OOS nodes are created by <a class="reference external" href="#graph-builders">Graph Builders</a> that read raw corpus data and map it to the InsightsNet graph. Graph builders also create some basic self-evident annotations (e.g. authors, provided keywords). The OOS nodes are analysed by automatic <a class="reference external" href="#annotators">Annotators</a>, which add or update annoations to the graph.</p>
+<p><img alt="Insights Net Graph" src="_images/InsightsNet_Data_Model.drawio.png" /></p>
+<p>In order to create direct links between annotations <span class="xref myst">Annotation Linkers</span> establish relations between existing annotations like “is identical to”, “belongs to”, etc., see <a class="reference external" href="https://gitlab.dlr.de/insightsnet/data-model/-/tree/main/annotation_graph">annoation graph</a>.</p>
+<p>The enriched InsightsNet graph can be further analysed or queried by <a class="reference external" href="#analyzers">Analyzers</a> for producing results to be presented to the end-users.</p>
+<section id="handling-time-and-provenance-metadata">
+<h2>Handling time and provenance metadata<a class="headerlink" href="#handling-time-and-provenance-metadata" title="Permalink to this headline">#</a></h2>
+<p>Every node and relation in the InsightsNet graph has to carry at least the time when it was created or last updated. This not only enable temporal analyses but makes to graph also revertable to a former state in case of inconsistencies. Furthermore, in case of growing corpora timestamps allow incremental graph updates based on only new corpus entries. Components that enrich the graph, i.e. <strong>annotators</strong> also store metadata about how an annotation was created (i.e. parameterization of algorithms).
+Metadata handling in the different components is described specifically in the description of <a class="reference external" href="#components">component types</a>.</p>
+</section>
+<section id="subgraph-selection">
+<h2>Subgraph selection<a class="headerlink" href="#subgraph-selection" title="Permalink to this headline">#</a></h2>
+<p>For many use cases not the full graph is needed for annotation and analysis runs. In order to save computation time components that create annoations or perform other analyses operate only on a subgraph given by a corresponding subgraph query that, for example, restrics the graph to a certain time window or selects specific objects of study. New automatic annotations are only added to nodes in the subgraph where they are missing but never recomputed if not needed, see <a class="reference external" href="#annotators">gradual update rules of annotators</a>.</p>
+</section>
+<section id="components">
+<h2>Components<a class="headerlink" href="#components" title="Permalink to this headline">#</a></h2>
+<section id="graph-builders">
+<h3>Graph Builders<a class="headerlink" href="#graph-builders" title="Permalink to this headline">#</a></h3>
+<p>Graph builder components evaluate raw corpus data and map it to the InsightsNet Graph by creating OOS nodes and corresponding relations.</p>
+<p><strong>Input:</strong> Raw corpus data</p>
+<p>** Output:** Object of study (OOS) nodes, self-evident annotations and relations in ArangoDB (InsighsNet Graph)</p>
+<p><strong>Metadata stored in nodes and edges:</strong></p>
+<ul class="simple">
+<li><p>Timestamp</p></li>
+</ul>
+<p><strong>Timestamp propagation:</strong>
+If content nodes are added or updated, their timestamp is recursively propagated to parent content nodes. For example, if a new revision (as well as corresponding text) nodes are added, the timestamps of the parent article node as well as the corpus node are updated (see graphic below). Since annoation nodes (see below) also carry timestamps, it can be determined which annotations have to be updated after the graph update.</p>
+<p><img alt="Timestamp propagation" src="_images/timestamp_propagation_example.png" /></p>
+</section>
+<section id="annotators">
+<h3>Annotators<a class="headerlink" href="#annotators" title="Permalink to this headline">#</a></h3>
+<p>Annotator components enrich the InsightsNet graph by analysing OOS nodes and link them to newly created annotation nodes. Annotations can be on different levels. For example, corpus level (e.g. corpus statistics, topics), text nodes (e.g. named entities, keyphrases), image nodes (e.g. generated caption), etc.</p>
+<p><strong>Input:</strong> InsightsNet Knowledge Graph, Subgraph selection query</p>
+<p>** Output:** Annotation nodes and relations in ArangoDB (Updated InsightsNet Knowledge Graph)</p>
+<p><strong>Metadata stored in annotation nodes and annotated edges:</strong></p>
+<ul class="simple">
+<li><p>Timestamp</p></li>
+<li><p>Component that created the annotation</p></li>
+<li><p>Parameters used for analysing content nodes</p></li>
+</ul>
+<p>An example for annotation metadata in json format for annotations produced by keyphrase extraction is given below:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+    <span class="n">analysis_component</span><span class="p">:</span> <span class="s1">&#39;keyphrase_extraction&#39;</span><span class="p">,</span>
+    <span class="n">parameters</span><span class="p">:</span> <span class="p">{</span>
+        <span class="n">algorithm</span><span class="p">:</span> <span class="n">text_rank</span><span class="p">,</span>
+        <span class="n">relevance_threshold</span><span class="p">:</span> <span class="mf">0.75</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p><strong>Gradual update rules:</strong></p>
+<p>The annotation metadata is used to keep the annoation graph consistent and to avoid unneccessary computations.</p>
+<p>An annotation of a OOS node is only computed once. To this end, before an annotator (parameterized by algorithm and settings) analyzes an OOS node, it first checks if there exists already an attached annotation node that has matching parameter settings in its metadata. In this way annotations can be created on demand for specific subgraphs depending on the analysis goal and re-used where possible. The more analysis runs performed, the less likely it is that a OOS node has to be evaluated.</p>
+<p>However, since the corpus builder can modify the OOS part of the graph annotations may need to be updated after graph updates. The timestamp propagation mechanism of the graph builder components described above ensures that the timestamp of OOS nodes is updated if it was affected by a graph update. If the timestamp of an annotation is smaller than the timestamp of its attached OOS node, it might be outdated and needs re-computation.</p>
+<p>Two options for annotation updates <em>(open issue)</em>:</p>
+<ol class="simple">
+<li><p>Compute new delete old (Pro: No legacy information, Con: Graph is not fully reversible to a prior state).</p></li>
+<li><p>Compute new flag old as outdated (Pro: Graph is fully reversible to any prior state, Con: Graph may contain much useless information, e.g. results from trial runs)</p></li>
+</ol>
+</section>
+<section id="annoation-linkers">
+<h3>Annoation Linkers<a class="headerlink" href="#annoation-linkers" title="Permalink to this headline">#</a></h3>
+<p>Annotation linkers</p>
+<p><strong>Input:</strong> InsightsNet Knowledge Graph, Subgraph selection query</p>
+<p><strong>Output:</strong> Links between annoations in ArangoDB (Updated InsightsNet Knowledge Graph)</p>
+<p><strong>Metadata links between annotation:</strong></p>
+<ul class="simple">
+<li><p>Timestamp</p></li>
+</ul>
+<p>Timing of</p>
+</section>
+<section id="analyzers">
+<h3>Analyzers<a class="headerlink" href="#analyzers" title="Permalink to this headline">#</a></h3>
+<p>Analysers are components that produce results that are not stored in the InsightsNet Graph. These can be, for example, visualisations. Some analysers may just read out information from the graph (e.g. corpus topics) and create a representation for the end user. Others can perform analyses based on specific queries (e.g. determining collocates of a given query term).</p>
+<p><strong>Input:</strong> Updated InsightsNet Knowledge Graph, Subgraph selection query</p>
+<p><strong>Output:</strong> Analysis results and visualisations</p>
+</section>
+</section>
+<section id="gui">
+<h2>GUI<a class="headerlink" href="#gui" title="Permalink to this headline">#</a></h2>
+<p>Requirements: <a class="reference external" href="https://gitlab.dlr.de/insightsnet/data-model/-/tree/main/annotation_graph#purpose-of-a-gui">https://gitlab.dlr.de/insightsnet/data-model/-/tree/main/annotation_graph#purpose-of-a-gui</a></p>
+<p><strong>Open issues:</strong></p>
+<ul class="simple">
+<li><p>Parameterisation of annotators and analysers</p></li>
+<li><p>Subgraph queries</p></li>
+<li><p>Fixed but parameterizable workflows integrated in UI or user defined composition of workflows based on a selection of annotator -&gt; annotation linker -&gt; analyzer</p></li>
+<li><p>Presentation of analysis results</p></li>
+<li><p>Manual annotations</p></li>
+</ul>
+</section>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            kernelName: "python3",
+            path: "./."
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+              </div>
+              
+            </main>
+            <footer class="footer-article noprint">
+                
+    <!-- Previous / next buttons -->
+<div class='prev-next-area'>
+    <a class='left-prev' id="prev-link" href="introduction.html" title="previous page">
+        <i class="fas fa-angle-left"></i>
+        <div class="prev-next-info">
+            <p class="prev-next-subtitle">previous</p>
+            <p class="prev-next-title">Corpus Analytics Graph (CAG)</p>
+        </div>
+    </a>
+    <a class='right-next' id="next-link" href="0_download_process_data.html" title="next page">
+    <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">Data Preparation</p>
+    </div>
+    <i class="fas fa-angle-right"></i>
+    </a>
+</div>
+            </footer>
+        </div>
+    </div>
+    <div class="footer-content row">
+        <footer class="col footer"><p>
+  
+    By The Jupyter Book Community<br/>
+  
+      &copy; Copyright 2022.<br/>
+</p>
+        </footer>
+    </div>
+    
+</div>
+
+
+      </div>
+    </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="_static/scripts/pydata-sphinx-theme.js?digest=1999514e3f237ded88cf"></script>
+
+
+  </body>
+</html>
